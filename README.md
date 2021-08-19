@@ -1,7 +1,7 @@
 # taskmaster-pro
 
-#Program to help manage your lifes daily tasks
+# Program to help manage all of life's daily tasks
 
-#Allows for detailed descriptive tasks
+# Allows for detailed descriptive tasks
 
-#github.com/jyoung0613/taskmaster-pro/
+# github.com/jyoung0613/taskmaster-pro/
