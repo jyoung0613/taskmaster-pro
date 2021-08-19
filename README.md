@@ -4,4 +4,4 @@
 
 # Allows for detailed descriptive tasks
 
-#github.com/jyoung0613/taskmaster-pro/
+#website: https://jyoung0613.github.io/taskmaster-pro/
