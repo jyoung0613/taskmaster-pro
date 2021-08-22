@@ -45,9 +45,6 @@ var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
-
-
-
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
   // clear values
@@ -89,12 +86,13 @@ $(".list-group").on("click", "p", function() {
     .text()
     .trim();
 
+    // replace p element with a new textarea
   var textInput = $("<textarea>")
     .addClass("form-control")
     .val(text);
+  $(this).replaceWith(textInput);
 
-    $(this).replaceWith(textInput);
-
+  // auto focus new element
     textInput.trigger("focus");
 });
 
@@ -113,7 +111,7 @@ $(".list-group").on("blur", "textarea", function() {
     .index();
 
   // update task in array and re-save to localstorage
-  tasks[status][index].text = text,
+  tasks[status][index].text = text;
   saveTasks();
 
   // recreate p element
