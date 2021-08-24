@@ -25,7 +25,7 @@ var loadTasks = function() {
 
   // if nothing in localStorage, create a new object to track all task status arrays
   if (!tasks) {
-    tasks = {
+      tasks = {
       toDo: [],
       inProgress: [],
       inReview: [],
@@ -36,7 +36,7 @@ var loadTasks = function() {
   // loop over object properties
   $.each(tasks, function(list, arr) {
     // then loop over sub-array
-    [arr].forEach(function(task) {
+    arr.forEach(function(task) {
       createTask(task.text, task.date, list);
     });
   });
@@ -71,6 +71,13 @@ var auditTask = function(taskEl) {
   else if (Math.abs(moment().diff(time, "days")) <= 2) {
     $(taskEl).addClass("list-group-item-warning");
   }
+
+  setInterval(function () {
+    $(".card .list-group-item").each(function(index, el) {
+      auditTask(el);
+    });
+  }, (1000 * 60) * 30);
+
 };
 
 // enable draggable/sortable feature on list-group elements
@@ -82,15 +89,21 @@ $(".card .list-group").sortable({
   helper: "clone",
 
   activate: function(event, ui) {
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
     console.log(ui);
   },
   deactivate: function(event, ui) {
+    $(this).removeClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag");
     console.log(ui);
   },
   over: function(event) {
+    $(this).addClass("dropover-active");
     console.log(event);
   },
   out: function(event) {
+    $(this).removeClass("dropover-active");
     console.log(event);
   },
   update: function() {
@@ -132,13 +145,16 @@ $("#trash").droppable({
   accept: ".card .list-group-item",
   tolerance: "touch",
   drop: function(event, ui) {
+    $(".bottom-trash").removeClass("bottom-trash-active");
     // remove dragged element from the dom
     ui.draggable.remove();
   },
   over: function(event, ui) {
+    $(".bottom-trash").addClass("bottom-trash-active");
     console.log(ui);
   },
   out: function(event, ui) {
+    $(".bottom-trash").removeClass("bottom-trash-active");
     console.log(ui);
   }
 });
@@ -162,7 +178,7 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function() {
+$("#task-form-modal .btn-save").click(function() {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -174,10 +190,7 @@ $("#task-form-modal .btn-primary").click(function() {
     $("#task-form-modal").modal("hide");
 
     // save in tasks array
-    tasks.toDo.push({
-      text: taskText,
-      date: taskDate
-    });
+    tasks.toDo.push({text: taskText, date: taskDate});
 
     saveTasks();
   }
