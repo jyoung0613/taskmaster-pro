@@ -72,12 +72,6 @@ var auditTask = function(taskEl) {
     $(taskEl).addClass("list-group-item-warning");
   }
 
-  setInterval(function () {
-    $(".card .list-group-item").each(function(index, el) {
-      auditTask(el);
-    });
-  }, (1000 * 60) * 30);
-
 };
 
 // enable draggable/sortable feature on list-group elements
@@ -99,11 +93,13 @@ $(".card .list-group").sortable({
     console.log(ui);
   },
   over: function(event) {
-    $(this).addClass("dropover-active");
+    $(event.target).addClass("dropover-active")
+    $(".bottom-trash").addClass("bottom-trash-active")
     console.log(event);
   },
   out: function(event) {
-    $(this).removeClass("dropover-active");
+    $(event.target).removeClass("dropover-active")
+    $(".bottom-trash").removeClass("bottom-trash-active")
     console.log(event);
   },
   update: function() {
@@ -150,11 +146,9 @@ $("#trash").droppable({
     ui.draggable.remove();
   },
   over: function(event, ui) {
-    $(".bottom-trash").addClass("bottom-trash-active");
     console.log(ui);
   },
   out: function(event, ui) {
-    $(".bottom-trash").removeClass("bottom-trash-active");
     console.log(ui);
   }
 });
@@ -190,7 +184,10 @@ $("#task-form-modal .btn-save").click(function() {
     $("#task-form-modal").modal("hide");
 
     // save in tasks array
-    tasks.toDo.push({text: taskText, date: taskDate});
+    tasks.toDo.push({
+      text: taskText, 
+      date: taskDate
+    });
 
     saveTasks();
   }
@@ -302,5 +299,11 @@ $("#remove-tasks").on("click", function() {
 
 // load tasks for the first time
 loadTasks();
+
+setInterval(function () {
+  $(".card .list-group-item").each(function(index, el) {
+    auditTask(el);
+  });
+}, (1000 * 60) * 30);
 
 
